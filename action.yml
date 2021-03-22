@@ -26,6 +26,10 @@ inputs:
     description: 'Github token'
     required: false
     default: ""
+  reviewer:
+    description: 'Request Review from'
+    required: false
+    default: ""
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -36,3 +40,4 @@ runs:
     PULL_REQUEST_TITLE: ${{ inputs.request_title }}
     PULL_REQUEST_BODY: ${{ inputs.request_body }}
     PULL_REQUEST_DRAFT: ${{ inputs.draft_pr }}
+    REVIEWER: ${{ inputs.reviewer }}
