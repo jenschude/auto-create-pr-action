@@ -69,7 +69,7 @@ create_pull_request() {
         echo "pull request from SOURCE ${SOURCE} to TARGET ${TARGET} is already open";
     else
         # open new pull request
-        DATA="{\"title\":\"${TITLE}\", \"body\":\"${BODY}\", \"base\":\"${TARGET}\", \"head\":\"${SOURCE}\", \"draft\":\"${DRAFT}\"}";
+        DATA="{\"title\":\"${TITLE}\", \"body\":\"${BODY}\", \"base\":\"${TARGET}\", \"head\":\"${SOURCE}\", \"draft\":${DRAFT}}";
         curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" -X POST --data "${DATA}" ${PULLS_URL};
 
         # handle_last_exit_code "$?"
@@ -108,8 +108,10 @@ main () {
     if [[ -z "${PULL_REQUEST_DRAFT}" ]]; then
         echo "no PULL_REQUEST_DRAFT set";
         PULL_REQUEST_DRAFT="false";
+    elif [ "false" == "${PULL_REQUEST_DRAFT}" ]; then
+        PULL_REQUEST_DRAFT="false";
     else
-        PULL_REQUEST_DRAFT="${PULL_REQUEST_DRAFT}";
+        PULL_REQUEST_DRAFT="true";
     fi
     echo "using PULL_REQUEST_DRAFT $PULL_REQUEST_DRAFT";
 
