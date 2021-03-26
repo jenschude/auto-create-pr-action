@@ -109,7 +109,7 @@ main () {
         echo "no PULL_REQUEST_DRAFT set";
         PULL_REQUEST_DRAFT="false";
     else
-        PULL_REQUEST_DRAFT="true";
+        PULL_REQUEST_DRAFT="${PULL_REQUEST_DRAFT}";
     fi
     echo "using PULL_REQUEST_DRAFT $PULL_REQUEST_DRAFT";
 
