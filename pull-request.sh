@@ -89,8 +89,7 @@ main () {
     fi
     echo "using BASE_BRANCH ${BASE_BRANCH}";
 
-    cat $GITHUB_EVENT_PATH
-    ORG=$(jq -r ".organization.org" "$GITHUB_EVENT_PATH");
+    ORG=$(jq -r ".repository.organization" "$GITHUB_EVENT_PATH");
     echo "using ORG ${ORG}"
 
     # PULL_REQUEST_DRAFT
