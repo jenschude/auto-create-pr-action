@@ -72,9 +72,9 @@ create_pull_request() {
         PR_NR=$(echo "${PR_RESPONSE}" | grep -E "^https://${GITHUB_REPOSITORY}/pull/[0-9]+$" | grep -oE "[0-9]+$")
         # handle_last_exit_code "$?"
 
-        if [[ -n "${REVIEWER}" ]]; then
-            gh pr edit ${PR_NR} --repo ${GITHUB_REPOSITORY} --add-reviewer ${REVIEWER}
-        fi
+#        if [[ -n "${REVIEWER}" ]]; then
+#            gh pr edit ${PR_NR} --repo ${GITHUB_REPOSITORY} --add-reviewer ${REVIEWER}
+#        fi
     fi
 }
 
