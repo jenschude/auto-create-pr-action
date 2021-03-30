@@ -78,7 +78,7 @@ create_pull_request() {
         if [[ -n "${REVIEWER}" ]]; then
             add_reviewer_to_PR "${PR}" "${REVIEWER}"
         fi
-        if [[ - n "${TEAM_REVIEWER}" ]]; then
+        if [[ -n "${TEAM_REVIEWER}" ]]; then
           add_team_reviewer_to_PR "${PR}" "${TEAM_REVIEWER}"
         fi
     fi
