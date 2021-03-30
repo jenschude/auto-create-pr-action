@@ -67,7 +67,7 @@ create_pull_request() {
         # pull request already open
         echo "pull request from SOURCE ${SOURCE} to TARGET ${TARGET} is already open";
     else
-        gh pr create --repo ${GITHUB_REPOSITORY} --title "${TITLE}" --body "${BODY}" --base "${TARGET}" --head "${SOURCE}"
+        gh pr create --repo ${GITHUB_REPOSITORY} --title "${TITLE}" --body "${BODY}" --base "${TARGET}" --head "${SOURCE}" ${DRAFT}
     fi
 }
 
@@ -92,11 +92,11 @@ main () {
     # PULL_REQUEST_DRAFT
     if [[ -z "${PULL_REQUEST_DRAFT}" ]]; then
         echo "no PULL_REQUEST_DRAFT set";
-        PULL_REQUEST_DRAFT="false";
+        PULL_REQUEST_DRAFT="";
     elif [ "false" == "${PULL_REQUEST_DRAFT}" ]; then
-        PULL_REQUEST_DRAFT="false";
+        PULL_REQUEST_DRAFT="";
     else
-        PULL_REQUEST_DRAFT="true";
+        PULL_REQUEST_DRAFT="--draft";
     fi
     echo "using PULL_REQUEST_DRAFT $PULL_REQUEST_DRAFT";
 

@@ -26,14 +26,6 @@ inputs:
     description: 'Github token'
     required: false
     default: ""
-  reviewer:
-    description: 'Request Review from'
-    required: false
-    default: ""
-  team_reviewer:
-    description: 'Request Team Review from'
-    required: false
-    default: ""
 runs:
   using: "composite"
   steps:
