@@ -87,13 +87,13 @@ create_pull_request() {
 function add_reviewer_to_PR() {
     PR="${1}";
     reviewer="${2}";
-    curl -sSL -X POST -H "${AUTH_HEADER}" -H "${HEADER}" -d "{\"reviewers\": [\"$reviewer\"]}" "$PULLS_URL/$PR/requested_reviewers";
+    curl -sSL -X POST -H "${AUTH_HEADER}" -H "${HEADER}" -d "{\"reviewers\": [\"${reviewer}\"]}" "${PULLS_URL}/${PR}/requested_reviewers";
 }
 
 function add_team_reviewer_to_PR() {
     PR="${1}";
-    reviewer="${2}";
-    curl -sSL -X POST -H "${AUTH_HEADER}" -H "${HEADER}" -d "{\"team_reviewers\": [\"$reviewer\"]}" "$PULLS_URL/$PR/requested_reviewers";
+    team_reviewer="${2}";
+    curl -sSL -X POST -H "${AUTH_HEADER}" -H "${HEADER}" -d "{\"team_reviewers\": [\"${team_reviewer}\"]}" "${PULLS_URL}/${PR}/requested_reviewers";
 }
 
 main () {
