@@ -76,7 +76,7 @@ create_pull_request() {
         # handle_last_exit_code "$?"
 
         if [[ -n "${REVIEWER}" ]]; then
-            gh pr edit ${PR_NR} --add-reviewer ${REVIEWER}
+            gh pr edit ${PR_NR} --repo ${GITHUB_REPOSITORY} --add-reviewer ${REVIEWER}
         fi
     fi
 }
