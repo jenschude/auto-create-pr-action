@@ -90,7 +90,7 @@ main () {
     fi
     echo "using BASE_BRANCH ${BASE_BRANCH}";
 
-    ORG=$(jq -r ".organization.org" "$ORG");
+    ORG=$(jq -r ".organization.org" "$GITHUB_EVENT_PATH");
     echo "using ORG ${ORG}"
 
     # PULL_REQUEST_DRAFT
