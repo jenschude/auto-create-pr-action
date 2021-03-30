@@ -57,8 +57,7 @@ create_pull_request() {
     DRAFT="${5}";   # if PRs are draft
 
     # check if the branch already has a pull request open
-    DATA="{\"base\":\"${TARGET}\", \"head\":\"${SOURCE}\"}";
-    RESPONSE=$(curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" -X GET --data "${DATA}" ${PULLS_URL});
+    RESPONSE=$(curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" -X GET "${PULLS_URL}?base=${TARGET}&head=${SOURCE}");
     echo $RESPONSE
     PR=$(echo "${RESPONSE}" | jq --raw-output '.[] | .head.ref');
 
