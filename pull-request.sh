@@ -71,9 +71,9 @@ create_pull_request() {
     else
         # open new pull request
         DATA="{\"title\":\"${TITLE}\", \"body\":\"${BODY}\", \"base\":\"${TARGET}\", \"head\":\"${SOURCE}\", \"draft\":${DRAFT}}";
-        RESPONSE=$(curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" -X POST --data "${DATA}" ${PULLS_URL});
+        PR_RESPONSE=$(curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" -X POST --data "${DATA}" ${PULLS_URL});
 
-        PR_NR=$(echo "${RESPONSE}" | jq --raw-output '.number')
+        PR_NR=$(echo "${PR_RESPONSE}" | jq --raw-output '.number')
         # handle_last_exit_code "$?"
 
         if [[ -n "${REVIEWER}" ]]; then
@@ -94,7 +94,7 @@ function add_reviewer_to_PR() {
 function add_team_reviewer_to_PR() {
     PR="${1}";
     team_reviewer="${2}";
-    curl -sSL -X POST -H "${AUTH_HEADER}" -H "${HEADER}" -d "{\"team_reviewers\": [\"${team_reviewer}\"]}" "${PULLS_URL}/${PR}/requested_reviewers";
+    curl -sSL -vvv -X POST -H "${AUTH_HEADER}" -H "${HEADER}" -d "{\"team_reviewers\": [\"${team_reviewer}\"]}" "${PULLS_URL}/${PR}/requested_reviewers";
 }
 
 main () {
