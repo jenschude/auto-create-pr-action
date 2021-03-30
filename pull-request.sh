@@ -71,15 +71,16 @@ create_pull_request() {
     else
         # open new pull request
         DATA="{\"title\":\"${TITLE}\", \"body\":\"${BODY}\", \"base\":\"${TARGET}\", \"head\":\"${SOURCE}\", \"draft\":${DRAFT}}";
-        curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" -X POST --data "${DATA}" ${PULLS_URL};
+        RESPONSE=$(curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" -X POST --data "${DATA}" ${PULLS_URL});
 
+        PR_NR=$(echo "${RESPONSE}" | jq --raw-output '.number')
         # handle_last_exit_code "$?"
 
         if [[ -n "${REVIEWER}" ]]; then
-            add_reviewer_to_PR "${PR}" "${REVIEWER}"
+            add_reviewer_to_PR "${PR_NR}" "${REVIEWER}"
         fi
         if [[ -n "${TEAM_REVIEWER}" ]]; then
-          add_team_reviewer_to_PR "${PR}" "${TEAM_REVIEWER}"
+          add_team_reviewer_to_PR "${PR_NR}" "${TEAM_REVIEWER}"
         fi
     fi
 }
