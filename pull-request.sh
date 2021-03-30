@@ -56,7 +56,6 @@ create_pull_request() {
     TITLE="${4}";   # pull request title
     DRAFT="${5}";   # if PRs are draft
     REVIEWER="${6}"; # request reviewer
-    TEAM_REVIEWER="${7}"; # request team reviewer
 
     # check if the branch already has a pull request open
     DATA="{\"base\":\"${TARGET}\", \"head\":\"${SOURCE}\", \"body\":\"${BODY}\"}";
@@ -77,24 +76,9 @@ create_pull_request() {
         # handle_last_exit_code "$?"
 
         if [[ -n "${REVIEWER}" ]]; then
-            add_reviewer_to_PR "${PR_NR}" "${REVIEWER}"
-        fi
-        if [[ -n "${TEAM_REVIEWER}" ]]; then
-          add_team_reviewer_to_PR "${PR_NR}" "${TEAM_REVIEWER}"
+            gh pr edit PR_NR --add-reviewer REVIEWER
         fi
     fi
-}
-
-function add_reviewer_to_PR() {
-    PR="${1}";
-    reviewer="${2}";
-    curl -sSL -X POST -H "${AUTH_HEADER}" -H "${HEADER}" -d "{\"reviewers\": [\"${reviewer}\"]}" "${PULLS_URL}/${PR}/requested_reviewers";
-}
-
-function add_team_reviewer_to_PR() {
-    PR="${1}";
-    team_reviewer="${2}";
-    curl -sSL -vvv -X POST -H "${AUTH_HEADER}" -H "${HEADER}" -d "{\"team_reviewers\": [\"${team_reviewer}\"]}" "${PULLS_URL}/${PR}/requested_reviewers";
 }
 
 main () {
@@ -153,7 +137,7 @@ main () {
             fi
             echo "using PULL_REQUEST_TITLE ${PULL_REQUEST_TITLE}";
 
-            create_pull_request "${HEAD_BRANCH}" "${BASE_BRANCH}" "${PULL_REQUEST_BODY}" "${PULL_REQUEST_TITLE}" "${PULL_REQUEST_DRAFT}" "${REVIEWER}" "${TEAM_REVIEWER}";
+            create_pull_request "${HEAD_BRANCH}" "${BASE_BRANCH}" "${PULL_REQUEST_BODY}" "${PULL_REQUEST_TITLE}" "${PULL_REQUEST_DRAFT}" "${REVIEWER}";
         fi
     fi
 }
