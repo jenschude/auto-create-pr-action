@@ -59,7 +59,6 @@ create_pull_request() {
 
     # check if the branch already has a pull request open
     RESPONSE=$(curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" -X GET "${PULLS_URL}?base=${TARGET}&head=${ORG}:${SOURCE}");
-    echo $RESPONSE
     PR=$(echo "${RESPONSE}" | jq --raw-output '.[] | .head.ref');
 
     echo "response ref: ${PR}";
@@ -90,6 +89,7 @@ main () {
     fi
     echo "using BASE_BRANCH ${BASE_BRANCH}";
 
+    cat $GITHUB_EVENT_PATH
     ORG=$(jq -r ".organization.org" "$GITHUB_EVENT_PATH");
     echo "using ORG ${ORG}"
 
