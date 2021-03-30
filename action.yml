@@ -30,6 +30,10 @@ inputs:
     description: 'Request Review from'
     required: false
     default: ""
+  team_reviewer:
+    description: 'Request Team Review from'
+    required: false
+    default: ""
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -41,3 +45,4 @@ runs:
     PULL_REQUEST_BODY: ${{ inputs.request_body }}
     PULL_REQUEST_DRAFT: ${{ inputs.draft_pr }}
     REVIEWER: ${{ inputs.reviewer }}
+    TEAM_REVIEWER: ${{ inputs.team_reviewer }}
