@@ -70,7 +70,9 @@ create_pull_request() {
     else
         # open new pull request
         DATA="{\"title\":\"${TITLE}\", \"body\":\"${BODY}\", \"base\":\"${TARGET}\", \"head\":\"${SOURCE}\", \"draft\":${DRAFT}}";
-        PR_RESPONSE=$(curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" -X POST --data "${DATA}" ${PULLS_URL});
+
+        PR_RESPONSE=$(gh pr create --title "${TITLE}" --body "${BODY}" --base "${TARGET}" --head "${SOURCE}" --draft "${draft}");
+
 
         PR_NR=$(echo "${PR_RESPONSE}" | jq --raw-output '.number')
         # handle_last_exit_code "$?"
