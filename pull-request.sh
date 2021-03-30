@@ -68,7 +68,7 @@ create_pull_request() {
         # pull request already open
         echo "pull request from SOURCE ${SOURCE} to TARGET ${TARGET} is already open";
     else
-        PR_RESPONSE=$(gh pr create --repo ${GITHUB_REPOSITORY} --title "${TITLE}" --body "${BODY}" --base "${TARGET}" --head "${SOURCE}" --draft "${draft}");
+        PR_RESPONSE=$(gh pr create --repo ${GITHUB_REPOSITORY} --title "${TITLE}" --body "${BODY}" --base "${TARGET}" --head "${SOURCE}" --draft "${DRAFT}");
         PR_NR=$(echo "${PR_RESPONSE}" | grep -E "^https://${GITHUB_REPOSITORY}/pull/[0-9]+$" | grep -oE "[0-9]+$")
         # handle_last_exit_code "$?"
 
@@ -122,7 +122,7 @@ main () {
             # PULL_REQUEST_BODY
             if [[ -z "${PULL_REQUEST_BODY}" ]]; then
                 echo "no PULL_REQUEST_BODY set";
-                PULL_REQUEST_BODY="";
+                PULL_REQUEST_BODY="${HEAD_BRANCH}";
             else
                 echo "using PULL_REQUEST_BODY ${PULL_REQUEST_BODY}";
             fi
