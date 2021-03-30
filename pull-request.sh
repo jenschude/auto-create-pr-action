@@ -55,9 +55,10 @@ create_pull_request() {
     BODY="${3}";    # this is the content of the message
     TITLE="${4}";   # pull request title
     DRAFT="${5}";   # if PRs are draft
+    ORG="${6}"; # repo org
 
     # check if the branch already has a pull request open
-    RESPONSE=$(curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" -X GET "${PULLS_URL}?base=${TARGET}&head=${SOURCE}");
+    RESPONSE=$(curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" -X GET "${PULLS_URL}?base=${TARGET}&head=${ORG}:${SOURCE}");
     echo $RESPONSE
     PR=$(echo "${RESPONSE}" | jq --raw-output '.[] | .head.ref');
 
@@ -88,6 +89,9 @@ main () {
         BASE_BRANCH=$(jq -r ".repository.default_branch" "$GITHUB_EVENT_PATH");
     fi
     echo "using BASE_BRANCH ${BASE_BRANCH}";
+
+    ORG=$(jq -r ".organization.org" "$ORG");
+    echo "using ORG ${ORG}"
 
     # PULL_REQUEST_DRAFT
     if [[ -z "${PULL_REQUEST_DRAFT}" ]]; then
@@ -127,7 +131,7 @@ main () {
             fi
             echo "using PULL_REQUEST_TITLE ${PULL_REQUEST_TITLE}";
 
-            create_pull_request "${HEAD_BRANCH}" "${BASE_BRANCH}" "${PULL_REQUEST_BODY}" "${PULL_REQUEST_TITLE}" "${PULL_REQUEST_DRAFT}";
+            create_pull_request "${HEAD_BRANCH}" "${BASE_BRANCH}" "${PULL_REQUEST_BODY}" "${PULL_REQUEST_TITLE}" "${PULL_REQUEST_DRAFT}" "${ORG}";
         fi
     fi
 }
