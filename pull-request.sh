@@ -56,6 +56,7 @@ create_pull_request() {
     TITLE="${4}";   # pull request title
     DRAFT="${5}";   # if PRs are draft
     ORG="${6}"; # repo org
+    LABEL="${7}"; # label
 
     # check if the branch already has a pull request open
     RESPONSE=$(curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" -X GET "${PULLS_URL}?base=${TARGET}&head=${ORG}:${SOURCE}");
@@ -67,7 +68,7 @@ create_pull_request() {
         # pull request already open
         echo "pull request from SOURCE ${SOURCE} to TARGET ${TARGET} is already open";
     else
-        gh pr create --repo ${GITHUB_REPOSITORY} --title "${TITLE}" --body "${BODY}" --base "${TARGET}" --head "${SOURCE}" ${DRAFT}
+        gh pr create --repo ${GITHUB_REPOSITORY} --title "${TITLE}" --body "${BODY}" --base "${TARGET}" --head "${SOURCE}" ${DRAFT} ${LABEL}
     fi
 }
 
@@ -103,6 +104,16 @@ main () {
     fi
     echo "using PULL_REQUEST_DRAFT $PULL_REQUEST_DRAFT";
 
+    # PULL_REQUEST_LABEL
+    if [[ -z "${PULL_REQUEST_LABEL}" ]]; then
+        echo "no PULL_REQUEST_LABEL set";
+        PULL_REQUEST_LABEL="";
+    else
+        PULL_REQUEST_LABEL="--label ${PULL_REQUEST_LABEL}";
+    fi
+    echo "using PULL_REQUEST_LABEL $PULL_REQUEST_LABEL";
+
+
     # get target branch
     HEAD_BRANCH=$(jq --raw-output .ref "${GITHUB_EVENT_PATH}");
     HEAD_BRANCH=$(echo "${HEAD_BRANCH/refs\/heads\//}");
@@ -130,7 +141,7 @@ main () {
             fi
             echo "using PULL_REQUEST_TITLE ${PULL_REQUEST_TITLE}";
 
-            create_pull_request "${HEAD_BRANCH}" "${BASE_BRANCH}" "${PULL_REQUEST_BODY}" "${PULL_REQUEST_TITLE}" "${PULL_REQUEST_DRAFT}" "${ORG}";
+            create_pull_request "${HEAD_BRANCH}" "${BASE_BRANCH}" "${PULL_REQUEST_BODY}" "${PULL_REQUEST_TITLE}" "${PULL_REQUEST_DRAFT}" "${ORG}" "${PULL_REQUEST_LABEL}";
         fi
     fi
 }
