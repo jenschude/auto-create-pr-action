@@ -22,6 +22,10 @@ inputs:
     description: 'Draft PR'
     required: false
     default: "false"
+  label:
+    description: 'Label'
+    required: false
+    default: ""
   github_token:
     description: 'Github token'
     required: false
@@ -38,5 +42,6 @@ runs:
         PULL_REQUEST_TITLE: ${{ inputs.request_title }}
         PULL_REQUEST_BODY: ${{ inputs.request_body }}
         PULL_REQUEST_DRAFT: ${{ inputs.draft_pr }}
+        PULL_REQUEST_LABEL: ${{ inputs.label }}
         REVIEWER: ${{ inputs.reviewer }}
         TEAM_REVIEWER: ${{ inputs.team_reviewer }}
